@@ -1,0 +1,31 @@
+
+services:
+  api:
+    container_name: biblioteca-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - environment.env
+    depends_on:
+      - mariadb
+    networks:
+      - interna
+
+  mariadb:
+    image: mariadb:11.4
+    container_name: biblioteca-3-db-11_3
+    env_file:
+      - environment.env
+    ports:
+      - "3306:3306"
+    networks:
+      - interna
+    volumes:
+      - "./data:/var/lib/mysql"
+
+networks:
+  interna:
+    driver: bridge
